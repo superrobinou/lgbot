@@ -1,4 +1,4 @@
-#LgBot: bot de loup garou pour discord
+# LgBot: bot de loup garou pour discord
 bot de loup garou pour un serveur discord, le bot n'est pas centrée sur les rôles du loup garou mais sur la modération d'une partie.
 Pour pouvoir lancer le bot, vous devez vous même un fichier .env dans lequelle vous devrez précisez:
 BOT_TOKEN="token du bot"
