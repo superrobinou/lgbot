@@ -4,7 +4,7 @@ import { Main } from "../client.js";
 import dotenv from "dotenv";
 import { gamePreparator } from "../client.js";
 
-import { JsonModel,JsonDatabase, Identifier } from "JsonDatabase";
+import { JsonModel,JsonDatabase, Identifier } from "crudjsondatabase";
 export class GameModel extends JsonModel {
     private categoryId: String;
     private lgchatTextChannelId: String;
