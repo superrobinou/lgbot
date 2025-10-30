@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/client.js",
   "scripts": {
-    "dev": "tsx watch --clear-screen=false ./src/client.ts"
+    "dev": "tsx watch --clear-screen=false ./src/main.ts"
   },
   "author": "robin thomas",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "discord.js": "^14.21.0",
     "discordx": "^11.12.5",
     "dotenv": "^17.2.1",
+    "jsondatabase": "file:../jsondatabase",
     "winston": "^3.17.0"
   },
   "devDependencies": {

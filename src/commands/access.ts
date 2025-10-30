@@ -1,9 +1,8 @@
 
 import { Channel,ApplicationCommandOptionType, CommandInteraction,GuildMember, VoiceChannel, TextChannel } from "discord.js";
 import { Discord, Slash, SlashChoice, SlashGroup, SlashOption } from "discordx";
-import { Game } from "../models/Game.js";
-import { prepareGame } from "../models/ModelPreparator.js";
-import { Main } from "../client.js";
+import { GameModel } from "../models/ModelPreparator.js";
+import { gamePreparator,Main } from "../client.js";
 @Discord()
 @SlashGroup({ name: "access", description: "gestion des accès" })
 @SlashGroup("access")
@@ -13,7 +12,7 @@ export class Access{
  ,@SlashOption({description:"channel pour lequel changer les accés",name:"channel",required:true,type:ApplicationCommandOptionType.Channel})channel:Channel,
       @SlashOption({description:"revoquer",required:true,name:"approuver",type:ApplicationCommandOptionType.Boolean}) approve:Boolean,interaction:CommandInteraction): Promise<void> {
                 const member = interaction.member as GuildMember;
-        const game:Game|null = await prepareGame(interaction,member);
+        const game:GameModel|null = await gamePreparator.prepareGame(interaction,member);
         channel=channel as TextChannel|VoiceChannel;
                   if(game!=null && game.notGlobalChannel(channel.id,channel.parentId) && game.isInGame(joueur.id) && joueur.id!=interaction.user.id) {
                     if(approve) {
@@ -39,7 +38,7 @@ async statusAccess(@SlashOption({description:"channel pour lequel changer les ac
       @SlashOption({ description: "accés par rapport au statut", name: "statut", required: true, type: ApplicationCommandOptionType.Boolean }) statut: Boolean, interaction: CommandInteraction): Promise<void> {
         const member:GuildMember = interaction.member as GuildMember;
         channel=channel as TextChannel|VoiceChannel;
-        const game:Game|null = await prepareGame(interaction,member);
+        const game:GameModel|null = await gamePreparator.prepareGame(interaction,member);
         if(game!=null && game.notGlobalChannel(channel.id, channel.parentId)) {
                   var statusRole = Main.getStatus(statut);
                     if(approve) {

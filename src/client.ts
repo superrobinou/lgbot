@@ -3,8 +3,9 @@ import { Client } from "discordx";
 import dotenv from "dotenv";
 import {dirname,importx} from "@discordx/importer";
 import  { createLogger,format,transports } from "winston";
+import { GamePreparator } from "./models/ModelPreparator.js";
 const { combine,timestamp,printf,colorize } = format;
-import { newGame} from "./models/ModelPreparator.js";
+export const gamePreparator:GamePreparator=new GamePreparator();
 export class Main {
   private static _client: Client;
   public static logger = createLogger({
@@ -60,8 +61,9 @@ static getStatus(status:Boolean): string {
     });
     this.Client.on("voiceStateUpdate", async (oldState, newState) => {
         dotenv.config({quiet: true});
+        console.log(process.env.DISCORD_CHANNEL_CREATION_ID);
         if(process.env.DISCORD_CHANNEL_CREATION_ID) {
-         await newGame(newState,process.env.DISCORD_CHANNEL_CREATION_ID);
+         await gamePreparator.newGame(newState,process.env.DISCORD_CHANNEL_CREATION_ID);
      
       }
        
@@ -77,6 +79,6 @@ static getStatus(status:Boolean): string {
   }
 }
 
-void Main.start();
+
 
 

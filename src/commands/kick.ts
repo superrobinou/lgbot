@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, CommandInteraction, GuildMember, GuildMemberRoleManager, User } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
-import { Game } from "../models/Game.js";
-import { prepareGame } from "../models/ModelPreparator.js";
+import { GameModel } from "../models/ModelPreparator.js";
+import { gamePreparator} from "../client.js";
 import { Main } from "../client.js";
 
 @Discord()
@@ -17,7 +17,7 @@ export class Kick {
    reason: string,
    interaction: CommandInteraction): Promise<void> {
     const member = interaction.member as GuildMember;
-    const game:Game|null = await prepareGame(interaction,member);
+    const game:GameModel|null = await gamePreparator.prepareGame(interaction,member);
     if (game!=null) {
       Main.logger.info(`Expulsion de ${user.user.username} de la partie de ${member.user.username}.`);
      await interaction.reply({content:`${user.user.username} a été expulsé de la partie.`, flags:64});

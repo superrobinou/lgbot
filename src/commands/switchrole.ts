@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, CommandInteraction, GuildMember, GuildMemberRoleManager, TextChannel, VoiceChannel} from "discord.js";
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
-import { prepareGame } from "../models/ModelPreparator.js";
-import { Game } from "../models/Game.js";
+import { GameModel } from "../models/ModelPreparator.js";
+import { gamePreparator} from "../client.js";
 import { Main } from "../client.js";
 @Discord()
 export class SwitchRoleCommand {
@@ -16,7 +16,7 @@ async switchStatus(
 
     const member = interaction.member as GuildMember;
     const channel=interaction.channel as TextChannel|VoiceChannel;
-    const game: Game|null = await prepareGame(interaction,member);
+    const game: GameModel|null = await gamePreparator.prepareGame(interaction,member);
     if(game!=null && game.isParentChannel(channel.parentId) && game.isInGame(player.id)) {
 
           var statusRole = Main.getStatus(status);

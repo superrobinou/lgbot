@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, CommandInteraction, GuildMember, TextChannel, VoiceChannel } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
-import { Game } from "../models/Game.js";
-import { isMJRole, prepareGame } from "../models/ModelPreparator.js";
+import { GameModel } from "../models/ModelPreparator.js";
+import { gamePreparator} from "../client.js";
 import { Main } from "../client.js";
 
 @Discord()
@@ -11,9 +11,9 @@ async switchMj(@SlashOption({name:"joueur",description:"le joueur qui doit deven
 ): Promise<void> {
     const member = interaction.member as GuildMember;
     const channel=interaction.channel as TextChannel|VoiceChannel;
-    const game: Game|null = await prepareGame(interaction,member);
+    const game: GameModel|null = await gamePreparator.prepareGame(interaction,member);
     if(game!=null && game.isParentChannel(channel.parentId)){
-        if(isMJRole(user)){
+        if(gamePreparator.isMJRole(user)){
             await game.switchMJ(user);
             Main.logger.info(`Le maitre du jeu a été changé pour ${user.user.username} par ${member.user.username}.`);
             await interaction.reply({content:`Le maitre du jeu a été changé pour ${user.user.username}.`, flags:64});

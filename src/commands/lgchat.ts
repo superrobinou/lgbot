@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionType, CommandInteraction, GuildMember, TextChannel, VoiceChannel } from "discord.js";
 import { Discord, Slash, SlashChoice, SlashGroup, SlashOption } from "discordx";
-import { prepareGame } from "../models/ModelPreparator.js";
-import { Game } from "../models/Game.js";
-import { Main } from "../client.js";
+import { GameModel } from "../models/ModelPreparator.js";
+import { gamePreparator} from "../client.js";
 
 @Discord()
    @SlashGroup({name:"lgchat",description: "Verrouiller/dévoureiller les channels globaux" })
@@ -21,7 +20,7 @@ export class LgChatCommand {
         user:GuildMember,interaction:CommandInteraction
     ): Promise<void> {
   const member = interaction.member as GuildMember;
-   const game:Game|null = await prepareGame(interaction,member);
+   const game:GameModel|null = await gamePreparator.prepareGame(interaction,member);
 if (game!=null) {
     game.globalLock(lock, user, type);
     await interaction.reply({content:`Le channels ont été mis à jour.`, flags:64});
@@ -39,7 +38,7 @@ if (game!=null) {
         user:GuildMember,interaction:CommandInteraction
     ): Promise<void> {
          const member = interaction.member as GuildMember;
-        const game:Game|null = await prepareGame(interaction,member);
+        const game:GameModel|null = await gamePreparator.prepareGame(interaction,member);
 if (game!=null && game.isParentChannel(channel.parentId)) {
                         game.channelLock(lock, user, channel);
                         await interaction.reply({content:`Le channels ont été mis à jour.`, flags:64});

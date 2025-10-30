@@ -2,7 +2,6 @@
 bot de loup garou pour un serveur discord, le bot n'est pas centrée sur les rôles du loup garou mais sur la modération d'une partie.
 Pour pouvoir lancer le bot, vous devez vous même un fichier .env dans lequelle vous devrez précisez:
 BOT_TOKEN="token du bot"
-DATABASE_URL="l'url de la base de données mongodb"
 IS_ALIVE_ROLE_ID="l'id du rôle vivant"
 IS_DEAD_ROLE_ID="l'id du rôle mort"
 ROLE_MJ_ID="l'id du rôle mj"

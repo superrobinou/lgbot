@@ -1,8 +1,7 @@
 import { Channel, ApplicationCommandOptionType, CommandInteraction, GuildMemberRoleManager, ChannelType, GuildMember, TextChannel, VoiceChannel } from "discord.js";
 import { Discord, Slash, SlashChoice, SlashGroup, SlashOption } from "discordx";
-import { prepareGame } from "../models/ModelPreparator.js";
-import { Game } from "../models/Game.js";
-import { Main } from "../client.js";
+import { GameModel } from "../models/ModelPreparator.js";
+import { gamePreparator } from "../client.js";
 
 @Discord()
 @SlashGroup({name:"channel",description:"gestion des channels"})
@@ -15,7 +14,7 @@ export class ChannelCommand {
      channel:Channel,interaction:CommandInteraction): Promise<void> {
       const member = interaction.member as GuildMember;
       channel=channel as TextChannel|VoiceChannel;
-           const game: Game|null = await prepareGame(interaction,member);
+           const game: GameModel|null = await gamePreparator.prepareGame(interaction,member);
         if(game!=null  && game.notGlobalChannel(channel.id,channel.parentId)) {
           await channel.delete();
           await interaction.reply({content:`Le channel ${channel.name} a été supprimé.`, flags:64});
@@ -34,7 +33,7 @@ export class ChannelCommand {
      interaction:CommandInteraction): Promise<void> {
       var channelType:ChannelType= ChannelType.GuildText;
       const member = interaction.member as GuildMember;
-      const game: Game|null = await prepareGame(interaction,member);
+      const game: GameModel|null = await gamePreparator.prepareGame(interaction,member);
       if(type!=="vocale" && type!=="textuelle") {
         await interaction.reply({content:"Type de channel invalide.", flags:64});
         return;
