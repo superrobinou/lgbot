@@ -1,21 +1,26 @@
-import { ApplicationCommandOptionType, CommandInteraction, GuildMember, GuildMemberRoleManager,User } from "discord.js";
-import { Discord, Slash, SlashOption } from "discordx";
-import { GameModel } from "../models/ModelPreparator.js";
-import { Main,gamePreparator } from "../client.js";
+import { GuildMember, SlashCommandBuilder, ChatInputCommandInteraction, Guild } from "discord.js";
+import { AbstractCommand } from "./AbstractCommand.js";
+import { GameModel } from "../models/GameModel.js";
+import { logger } from "../logger.js";
+export class Invite implements AbstractCommand {
+    data = new SlashCommandBuilder()
+        .setName("invite")
+        .setDescription("Invite players to your game");
 
-
-@Discord()
-export class Invite {
-    @Slash({name:"invite","description":"Invite players to your game"})
-    public async invite(
-        @SlashOption({name:"user", description:"The user to invite", type: ApplicationCommandOptionType.User, required: true}) user: GuildMember,interaction:CommandInteraction): Promise<void> {
+    constructor() {
+        this.data.addUserOption(option =>   
+            option.setName("member")
+                .setDescription("Member to invite")
+                .setRequired(true));
+    }
+    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        const user = interaction.options.getMember("member") as GuildMember;
         const member = interaction.member as GuildMember;
-        const game:GameModel|null = await gamePreparator.prepareGame(interaction,member);
-       
-        if (game!=null ) {
-                    Main.logger.info(`Invitation de ${user.user.username} par ${member.user.username} dans sa partie.`);
+        const game:GameModel|null = await GameModel.prepareGame(interaction,member);
+        logger.info("Le joueur "+user.user.username+" a été invité dans la partie de "+member.user.username);
+        if (game!=null) {
                     await interaction.reply({content:`${user.user.username} a été invité à rejoindre votre partie.`, flags:64});
-                    game.newPlayer(user.user.username,user.id)();
+                    user.roles.add(game.getJoueurRoleId().toString());
                 }
             }
     }

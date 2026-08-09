@@ -6,15 +6,15 @@
     "outDir": "dist",
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
+    "module": "esnext",
     "target": "esnext",
     // For nodejs:
-     "lib": ["esnext"],
      "types": ["node"],
      "emitDecoratorMetadata": false,
      "experimentalDecorators": true,
     // and npm install -D @types/node
-
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     // Other Outputs
     "sourceMap": true,
     "declaration": true,
